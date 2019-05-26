@@ -8,9 +8,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-import zipkin.server.EnableZipkinServer;
 
-@EnableZipkinServer
+@SuppressWarnings("deprecation")
+@zipkin.server.EnableZipkinServer
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = HttpEncodingAutoConfiguration.class)
