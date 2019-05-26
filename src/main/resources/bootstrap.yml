@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: zipkin-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true 
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888}  
+  security:
+    user:
+      name: "user"
+      password: "password"
+  boot:
+    admin:
+      client:
+        username: "user"       #These two are needed so that the client
+        password: "password"   #can register at the protected server api
+        instance:
+          metadata:
+            user.name: "user"         #These two are needed so that the server
+            user.password: "password" #can access the protected client endpoints
+        url:
+        - http://localhost:9090/
+        
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    statusPageUrlPath: /actuator/info
+    healthCheckUrlPath: /actuator/health
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+
+
+server:
+  port: ${appPort:9411}
+  
+info:
+  component: zipkin-server
+    
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    shutdown: 
+      enabled: true
+      
+# Logging
+logging:
+  pattern:
+    console: "[%-5level] %date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{15}#%line %msg\n"
+  level:
+    root: DEBUG
+    com.training.mjunction.usersvcs: DEBUG
+    org.springframework: ERROR
+    org.hibernate: DEBUG
+    sun.rmi: ERROR
+    org.reflections: ERROR
+    sun.reflect: ERROR
+    org.apache.coyote.http11: ERROR
+    org.glassfish.jersey.internal.util: ERROR
+    org.apache.tomcat.util: ERROR
+    org.apache.catalina.core: ERROR
+    com.sun.jersey.server.impl: ERROR
