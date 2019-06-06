@@ -5,8 +5,8 @@ spring:
     config:
       discovery:
         enabled: true
+        service-id: configserver
       enabled: true 
-      uri: ${CONFIG_SERVER_URL:http://localhost:8888}  
   security:
     user:
       name: "user"
